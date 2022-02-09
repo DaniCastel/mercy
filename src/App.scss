@@ -38,3 +38,26 @@
     transform: rotate(360deg);
   }
 }
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 1rem;
+  height: max-content;
+}
+
+pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+}
+
+.fromto {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
