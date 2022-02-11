@@ -1,4 +1,5 @@
 import { PluginT } from "../types";
+import { corePlugins } from "./corePlugins";
 
 export function processDiff(file: string) {
   if (typeof file !== "string") {
@@ -21,10 +22,6 @@ export function processDiff(file: string) {
     status: string = "";
 
   let gitError = false;
-  // for (let index = 0; index < array.length; index++) {
-  //   const element = array[index];
-
-  // }
 
   content.forEach((line, key) => {
     if (line.startsWith("diff")) {
@@ -38,15 +35,17 @@ export function processDiff(file: string) {
         if (oldVersion !== "" && newVersion === "") {
           status = "removed";
         }
+        if (!corePlugins.includes(componentId)) {
+          plugin = {
+            file: pluginFile,
+            oldVersion,
+            newVersion,
+            componentId,
+            status,
+          };
 
-        plugin = {
-          file: pluginFile,
-          oldVersion,
-          newVersion,
-          componentId,
-          status,
-        };
-        plugins.push(plugin);
+          plugins.push(plugin);
+        }
       }
       const files = line.split(" ");
       pluginFile = files[2];
@@ -72,10 +71,10 @@ export function processDiff(file: string) {
         .substring(line.indexOf("=") + 1, line.lastIndexOf(";"))
         .replace(/\s/g, "");
     }
-    // if (line.replace(/\s/g, "").startsWith("$plugin->component")) {
+
     if (line.includes("$plugin->component")) {
       componentId = line
-        .substring(line.indexOf("=") + 1, line.lastIndexOf(";"))
+        .substring(line.indexOf("'") + 1, line.lastIndexOf("'"))
         .replace(/\s/g, "");
     }
   });
@@ -91,16 +90,16 @@ export function processDiff(file: string) {
   if (oldVersion !== "" && newVersion === "") {
     status = "removed";
   }
+  if (!corePlugins.includes(componentId)) {
+    plugin = {
+      file: pluginFile,
+      oldVersion,
+      newVersion,
+      componentId,
+      status,
+    };
 
-  plugin = {
-    file: pluginFile,
-    oldVersion,
-    newVersion,
-    componentId,
-    status,
-  };
-
-  plugins.push(plugin);
-
+    plugins.push(plugin);
+  }
   return plugins;
 }

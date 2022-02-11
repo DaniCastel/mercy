@@ -16,10 +16,11 @@ function App() {
   const [to, setTo] = useState<string>("MR-3.11");
   const [pluginList, setPluginList] = useState<PluginT[]>([]);
 
-  const props = {
+  const tableProps = {
     name: "file",
     multiple: false,
     maxCount: 1,
+    pagination: false,
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
 
     beforeUpload: (file: any) => {
@@ -88,7 +89,7 @@ function App() {
       <section className="step">
         <h1>Step 3: Upload your file here</h1>
         <div>
-          <Dragger {...props}>
+          <Dragger {...tableProps}>
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
             </p>
