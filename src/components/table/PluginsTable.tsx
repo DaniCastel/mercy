@@ -1,71 +1,69 @@
 import React, { useState } from "react";
 import { Table, Tag, Space } from "antd";
 
-function PluginsTable() {
+import { PluginT } from "../../types";
+
+type Props = {
+  pluginList: PluginT[];
+};
+
+function PluginsTable({ pluginList }: Props) {
+  console.log(pluginList);
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status: string) => {
+        let color = "geekblue";
+        switch (status) {
+          case "new":
+            color = "#73d13d";
+            break;
+          case "updated":
+            color = "#096dd9";
+            break;
+          case "removed":
+            color = "#fa541c";
+            break;
+          default:
+            //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
+            break;
+        }
+        return (
+          <>
+            <Tag color={color} key={status}>
+              {status.toUpperCase()}
+            </Tag>
+          </>
+        );
+      },
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "Path",
+      dataIndex: "file",
+      key: "file",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Component ID",
+      dataIndex: "componentId",
+      key: "componentId",
     },
     {
-      title: "Tags",
-      key: "tags",
-      dataIndex: "tags",
-      render: (tags: Array<string>) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      title: "Old version",
+      dataIndex: "oldVersion",
+      key: "oldVersion",
+    },
+    {
+      title: "New version",
+      dataIndex: "newVersion",
+      key: "newVersion",
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
   return (
     <div>
-      <Table columns={columns} dataSource={data} />
+      {<Table columns={columns} size="small" dataSource={pluginList} />}
     </div>
   );
 }

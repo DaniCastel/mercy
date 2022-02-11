@@ -54,10 +54,23 @@ pre code {
   border: 1px solid #999;
   display: block;
   padding: 20px;
+  overflow: scroll;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: justify;
 }
 
 .fromto {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.plugins_table {
+  padding: 1rem;
+  width: min-content;
+  margin: auto;
 }

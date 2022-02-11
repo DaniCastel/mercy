@@ -6,17 +6,21 @@ import { Upload, message, Input, Button } from "antd";
 import { InboxOutlined, DownloadOutlined } from "@ant-design/icons";
 
 import PluginsTable from "./components/table/PluginsTable";
+import { processDiff } from "./utils/processDiff";
+import { PluginT } from "./types";
 const { Dragger } = Upload;
 
 function App() {
-  const [file, setFile] = useState<string>();
+  const [file, setFile] = useState<string>("");
   const [from, setFrom] = useState<string>("MR-3.10-MP2");
   const [to, setTo] = useState<string>("MR-3.11");
+  const [pluginList, setPluginList] = useState<PluginT[]>([]);
 
   const props = {
     name: "file",
     multiple: false,
     maxCount: 1,
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
 
     beforeUpload: (file: any) => {
       const isTXT = file.type === "text/plain";
@@ -37,7 +41,7 @@ function App() {
       if (status === "done") {
         message.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+        // message.error(`${info.file.name} file upload failed.`);
       }
     },
     onDrop(e: { dataTransfer: { files: any } }) {
@@ -45,65 +49,8 @@ function App() {
     },
   };
 
-  type Plugin = {
-    file: string;
-    oldVersion: string;
-    newVersion: string;
-    componentId: string;
-  };
-
-  const processDiff = () => {
-    if (typeof file !== "string") {
-      return;
-    }
-    const plugins: Plugin[] = [];
-
-    const content = file.split("\n");
-    let plugin: Plugin = {
-      file: "",
-      oldVersion: "",
-      newVersion: "",
-      componentId: "",
-    };
-    content.forEach((line, key) => {
-      if (line.startsWith("diff")) {
-        if (key !== 0) {
-          plugins.push(plugin);
-        }
-        plugin = {
-          file: "",
-          oldVersion: "",
-          newVersion: "",
-          componentId: "",
-        };
-        const files = line.split(" ");
-        plugin.file = files[2];
-        if (files[2].substring(2) !== files[2].substring(2)) {
-          console.log("alert", files[2], files[3]);
-        }
-      }
-      if (line.includes("-$plugin->version")) {
-        const oldVersion = line
-          .substring(line.indexOf("=") + 1, line.lastIndexOf(";"))
-          .replace(/\s/g, "");
-        plugin.oldVersion = oldVersion;
-      }
-      if (line.includes("+$plugin->version")) {
-        const newVersion = line
-          .substring(line.indexOf("=") + 1, line.lastIndexOf(";"))
-          .replace(/\s/g, "");
-        plugin.newVersion = newVersion;
-      }
-      // if (line.replace(/\s/g, "").startsWith("$plugin->component")) {
-      if (line.includes("$plugin->component")) {
-        const componentId = line
-          .substring(line.indexOf("=") + 1, line.lastIndexOf(";"))
-          .replace(/\s/g, "");
-        plugin.componentId = componentId;
-      }
-    });
-    plugins.push(plugin);
-    console.log("plugins", plugins);
+  const processFile = (file: string) => {
+    setPluginList(processDiff(file));
   };
 
   return (
@@ -161,13 +108,15 @@ function App() {
           shape="round"
           icon={<DownloadOutlined />}
           size="large"
-          onClick={() => processDiff()}
+          onClick={() => processFile(file)}
         >
           Download
         </Button>
       </section>
       <section>
-        <PluginsTable></PluginsTable>
+        <div className="plugins_table">
+          <PluginsTable pluginList={pluginList}></PluginsTable>
+        </div>
       </section>
     </div>
   );
