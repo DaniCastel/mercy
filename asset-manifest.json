@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/mercy/static/css/main.261fd776.css",
-    "main.js": "/mercy/static/js/main.3c20b690.js",
+    "main.js": "/mercy/static/js/main.3f4057d5.js",
     "static/js/787.4822c438.chunk.js": "/mercy/static/js/787.4822c438.chunk.js",
     "index.html": "/mercy/index.html",
     "main.261fd776.css.map": "/mercy/static/css/main.261fd776.css.map",
-    "main.3c20b690.js.map": "/mercy/static/js/main.3c20b690.js.map",
+    "main.3f4057d5.js.map": "/mercy/static/js/main.3f4057d5.js.map",
     "787.4822c438.chunk.js.map": "/mercy/static/js/787.4822c438.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.261fd776.css",
-    "static/js/main.3c20b690.js"
+    "static/js/main.3f4057d5.js"
   ]
 }
