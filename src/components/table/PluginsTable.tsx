@@ -27,7 +27,6 @@ function PluginsTable({ pluginList }: Props) {
             color = "#fa541c";
             break;
           default:
-            //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
             break;
         }
         return (

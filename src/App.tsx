@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "antd/dist/antd.css";
 import "./App.scss";
 
@@ -12,8 +12,8 @@ const { Dragger } = Upload;
 
 function App() {
   const [file, setFile] = useState<string>("");
-  const [from, setFrom] = useState<string>("MR-3.10-MP2");
-  const [to, setTo] = useState<string>("MR-3.11");
+  const [from, setFrom] = useState<string>("MR-3.11");
+  const [to, setTo] = useState<string>("MR-3.11-MP1");
   const [pluginList, setPluginList] = useState<PluginT[]>([]);
 
   const tableProps = {
@@ -53,6 +53,10 @@ function App() {
   const processFile = (file: string) => {
     setPluginList(processDiff(file));
   };
+
+  useEffect(() => {
+    document.title = "Mercy - Identify plugins from diff file";
+  }, []);
 
   return (
     <div className="App">
